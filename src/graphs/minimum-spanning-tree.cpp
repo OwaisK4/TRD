@@ -1,9 +1,17 @@
-int n;
-vector<vector<int>> adj;    // adjacency matrix of graph
+class Edge { public: int u, v, w; };
+int n, m;
+vector<Edge> edgeList(m); DSU dsu(n);
+sort(all(edgeList), [](Edge &a, Edge &b) { return a.w < b.w; });
+int cost = 0;
+for (Edge e : edgeList) {
+    if (dsu.find_set(e.u) != dsu.find_set(e.v)) {
+        cost += e.w; dsu.union_set(e.u, e.v);
+    }
+}
+// Prim's
+int n; vector<vector<int>> adj;    // adjacency matrix of graph
 const int INF = 1000000000; // weight INF means there is no edge
-struct Edge {
-    int w = INF, to = -1;
-};
+struct Edge { int w = INF, to = -1; };
 void prim() {
     int total_weight = 0;
     vector<bool> selected(n, false);
@@ -16,8 +24,7 @@ void prim() {
                 v = j;
         }
         if (min_e[v].w == INF) {
-            cout << "No MST!" << endl;
-            exit(0);
+            cout << "No MST!" << endl; exit(0);
         }
         selected[v] = true;
         total_weight += min_e[v].w;

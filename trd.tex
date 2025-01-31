@@ -1,0 +1,102 @@
+\documentclass[letterpaper,12pt]{article} %{amsart}
+\usepackage[pdftex]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% Use Times New Roman
+\usepackage{mathptmx}
+
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{courier}
+\usepackage{fancyhdr}
+
+\lstset{columns=fullflexible}
+\lstset{breaklines=true, breakatwhitespace=true}
+\lstset{basicstyle=\scriptsize\ttfamily}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+
+\geometry{landscape}
+\setlength{\topmargin}{-0.25in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\columnsep}{0.5in}
+\setlength{\columnseprule}{0.2pt}
+\textwidth 9.5in
+
+\pagestyle{fancy}
+\lhead{FAST NUCES, Karachi}
+\chead{}
+\rhead{\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\newcommand{\includecpp}[2]{
+  \subsection{#1}\
+  \lstinputlisting[language=c++]{#2}
+}
+
+\newcommand{\includejava}[2]{
+  \subsection{#1}\
+  \lstinputlisting[language=java]{#2}
+}
+
+\begin{document}
+  \thispagestyle{fancy}
+  \pagenumbering{Roman}
+  
+  \begin{center}
+    \Huge\textsc{ACM-ICPC Team Reference Document}
+
+    \huge The Codists
+
+    \vspace{0.50cm}
+  \end{center}
+  
+  \begin{multicols*}{2}
+    \tableofcontents
+  \end{multicols*}
+  
+  \enlargethispage*{\baselineskip}
+  \pagebreak
+  
+  % == CONTENTS == %
+  
+  \pagenumbering{arabic}
+  \setcounter{page}{1}
+  \begin{multicols*}{2}
+    \input{contents.tex}
+    \text{Number of divisors:}
+    \[
+    d(n) = (e_1 + 1) \cdot (e_2 + 1) \cdots (e_k + 1)
+    \]
+    \text{Sum of divisors:}
+    \[
+    \sigma(n) = \frac{p_1^{e_1+1} - 1}{p_1 - 1} \cdot \frac{p_2^{e_2+1} - 1}{p_2 - 1} \cdots \frac{p_k^{e_k+1} - 1}{p_k - 1}
+    \]
+    \text{Substring hashing:}
+    When polynomial hashing is used, we can calculate the hash value of any substring of a string \( s \) in \( O(1) \) time after an \( O(n) \) time preprocessing. The idea is to construct an array \( h \) such that \( h[k] \) contains the hash value of the prefix \( s[0 \dots k] \). The array values can be recursively calculated as follows:
+    \[
+    h[0] = s[0]
+    \]
+    \[
+    h[k] = (h[k - 1] A + s[k]) \mod B
+    \]
+    In addition, we construct an array \( p \) where \( p[k] = A^k \mod B \):
+    \[
+    p[0] = 1
+    \]
+    \[
+    p[k] = (p[k - 1] A) \mod B.
+    \]
+    Constructing the above arrays takes \( O(n) \) time. After this, the hash value of any substring \( s[a \dots b] \) can be calculated in \( O(1) \) time using the formula:
+    \[
+    (h[b] - h[a - 1] p[b - a + 1]) \mod B
+    \]
+    assuming that \( a > 0 \). If \( a = 0 \), the hash value is simply \( h[b] \).
+  \end{multicols*}
+\end{document}
